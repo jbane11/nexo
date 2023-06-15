@@ -1,0 +1,1112 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "importing Jupyter notebook from nexoheader.ipynb\n"
+     ]
+    }
+   ],
+   "source": [
+    "import import_ipynb\n",
+    "from nexoheader import *\n",
+    "import uproot3\n",
+    "import awkward as ak"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "tgt=\"Tl208\"\n",
+    "seed=55\n",
+    "nevts=5000\n",
+    "\n",
+    "\n",
+    "file = \"/home/wrkshp/nexo/slurm_data/recon/ExternalGammas_light-%s-%i-seed%i_sensrecon.root\"%(tgt,nevts,seed)\n",
+    "newfilename = \"/home/wrkshp/nexo/slurm_data/sens/%s-seed%i.root\"%(tgt,seed)\n",
+    "\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "9"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "file.find(\"shp\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n",
+    "def simpletree(file=\"\",newfilename=\"\"):\n",
+    "    Treenames=[\"Energy\",\"Standoff\",\"ChargeQuanta\",\"Photons\",\"DNNTag\",\"NESTBugFlag\"]\n",
+    "    \n",
+    "    \n",
+    "    \n",
+    "    \n",
+    "    rootfile=uproot.open(file)\n",
+    "    \n",
+    "    \n",
+    "    BR=1.0\n",
+    "    if file.find(\"Tl208\") >= 1:\n",
+    "        BR=0.36\n",
+    "    \n",
+    "    \n",
+    "    #newrootfile=uproot.recreate(newfile)\n",
+    "    trees=[]\n",
+    "\n",
+    "    treesinfo=[]\n",
+    "    bdicts={}\n",
+    "    b_dicts_info={}\n",
+    "    branches=[]\n",
+    "    bb=0\n",
+    "\n",
+    "    for i,tname in enumerate(Treenames):\n",
+    "      #  print(len(trees))\n",
+    "        treeinfo={}\n",
+    "        \n",
+    "        try:\n",
+    "            trees.append(rootfile[\"Event/Recon/%s/%s\"%(tname,tname)])\n",
+    "            treeinfo[\"name\"]=tname\n",
+    "            treeinfo[\"path\"]=\"Event/Recon/%s/%s\"%(tname,tname)\n",
+    "            treeinfo[\"branch\"]=rootfile[\"Event/Recon/%s/%s/%s\"%(tname,tname,tname)]\n",
+    "        except:\n",
+    "            print(\"Issue with \",tname, \" on file \",file)      \n",
+    "            return 0   \n",
+    "        print(treeinfo[\"branch\"].keys())\n",
+    "        if True: \n",
+    "            for j, bname in enumerate(treeinfo[\"branch\"].keys()):\n",
+    "                if j < 4:\n",
+    "                    continue \n",
+    "                #print(bname)\n",
+    "                bdict={}\n",
+    "                bdict[\"name\"]=bname\n",
+    "                bdict[\"values\"]=treeinfo[\"branch\"][bname].array()\n",
+    "\n",
+    "                branches.append(rootfile[\"Event/Recon/%s/%s/%s\"%(tname,tname,bname)])\n",
+    "                #bdicts.append(bdict)\n",
+    "                bdicts[bname]=treeinfo[\"branch\"][bname].array()\n",
+    "\n",
+    "                b_dicts_info[bname]=type(bdict[\"values\"][0])\n",
+    "                #print(\"\\t\\t\\t\\t \",len(bdicts),\"  \",len(b_dicts_info))\n",
+    "    \n",
+    "    bdicts[\"Branch_ratio\"]= ak.highlevel.Array([BR]*len(bdicts[bname]))\n",
+    "  \n",
+    "    b_dicts_info[\"Branch_ratio\"]= type(bdict[\"values\"][0])        \n",
+    "    with uproot3.recreate(newfilename) as f:\n",
+    "        f[\"nexo\"] = uproot3.newtree(b_dicts_info,title=\"\")\n",
+    "\n",
+    "        f[\"nexo\"].extend(bdicts)\n",
+    "    \n",
+    "    f.close()\n",
+    "    \n",
+    "    \n",
+    "    \n",
+    "    \n",
+    "    return f[\"nexo\"]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "DeserializationError",
+     "evalue": "while reading\n\n    nEXO::FileMetaData version 1 as uproot.dynamic.Model_nEXO_3a3a_FileMetaData_v1 (439 bytes)\n        (base): <TObject None None at 0x7f146c37db50>\n        m_NavPath: <STLVector ['/Event/Sim', '/Event/Elec'] at 0x7f146c37dc70>\n        m_UUIDList: <STLVector ['b663fffe-33e2-11ed-b44b-d7144f86beef'] at 0x7f146c37dcd0>\nBase classes for nEXO::FileMetaData: (TObject)\nMembers for nEXO::FileMetaData: (m_NavPath), (m_UUIDList), m_BreakPoints, m_TreeMetaDatas, m_NavPriority\n\nexpected 16 bytes but cursor moved by 28 bytes (through std::map<std::string, std::vector<int64_t>>)\nin file /home/wrkshp/nexo/slurm_data/Tl208/ExternalGammas_light-v2-Tl208-5000-seed53.root\nin object /Meta/FileMetaData;1",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mDeserializationError\u001b[0m                      Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-5-7a6e2ad4087a>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[1;32m     13\u001b[0m \u001b[0;31m#ExternalGammas_light-v2-Tl208-5000-seed53.root\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     14\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---> 15\u001b[0;31m \u001b[0mrf\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m\"Meta/FileMetaData\"\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;32m~/.local/lib/python3.8/site-packages/uproot/reading.py\u001b[0m in \u001b[0;36m__getitem__\u001b[0;34m(self, where)\u001b[0m\n\u001b[1;32m   2088\u001b[0m                         \u001b[0;32melse\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   2089\u001b[0m                             \u001b[0mlast\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mstep\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 2090\u001b[0;31m                             \u001b[0mstep\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mstep\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mitem\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   2091\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   2092\u001b[0m                     \u001b[0;32melif\u001b[0m \u001b[0misinstance\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mstep\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0muproot\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mbehaviors\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mTBranch\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mHasBranches\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/.local/lib/python3.8/site-packages/uproot/reading.py\u001b[0m in \u001b[0;36m__getitem__\u001b[0;34m(self, where)\u001b[0m\n\u001b[1;32m   2105\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   2106\u001b[0m         \u001b[0;32melse\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 2107\u001b[0;31m             \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mkey\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mwhere\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mget\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   2108\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   2109\u001b[0m     \u001b[0;34m@\u001b[0m\u001b[0mproperty\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/.local/lib/python3.8/site-packages/uproot/reading.py\u001b[0m in \u001b[0;36mget\u001b[0;34m(self)\u001b[0m\n\u001b[1;32m   2508\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   2509\u001b[0m             \u001b[0;32mtry\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 2510\u001b[0;31m                 \u001b[0mout\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mcls\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mread\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mchunk\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mcursor\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mcontext\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_file\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mselffile\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mparent\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   2511\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   2512\u001b[0m             \u001b[0;32mexcept\u001b[0m \u001b[0muproot\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mdeserialization\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mDeserializationError\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/.local/lib/python3.8/site-packages/uproot/model.py\u001b[0m in \u001b[0;36mread\u001b[0;34m(cls, chunk, cursor, context, file, selffile, parent, concrete)\u001b[0m\n\u001b[1;32m   1307\u001b[0m         \u001b[0;31m# versioned_cls.read starts with numbytes_version again because move=False (above)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1308\u001b[0m         return cls.postprocess(\n\u001b[0;32m-> 1309\u001b[0;31m             versioned_cls.read(\n\u001b[0m\u001b[1;32m   1310\u001b[0m                 \u001b[0mchunk\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mcursor\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mcontext\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mfile\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mselffile\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mparent\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mconcrete\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mconcrete\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1311\u001b[0m             ),\n",
+      "\u001b[0;32m~/.local/lib/python3.8/site-packages/uproot/model.py\u001b[0m in \u001b[0;36mread\u001b[0;34m(cls, chunk, cursor, context, file, selffile, parent, concrete)\u001b[0m\n\u001b[1;32m    819\u001b[0m             )\n\u001b[1;32m    820\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 821\u001b[0;31m             \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mread_members\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mchunk\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mcursor\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mcontext\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mfile\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    822\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    823\u001b[0m             self.hook_after_read_members(\n",
+      "\u001b[0;32m<dynamic>\u001b[0m in \u001b[0;36mread_members\u001b[0;34m(self, chunk, cursor, context, file)\u001b[0m\n",
+      "\u001b[0;32m~/.local/lib/python3.8/site-packages/uproot/containers.py\u001b[0m in \u001b[0;36mread\u001b[0;34m(self, chunk, cursor, context, file, selffile, parent, header)\u001b[0m\n\u001b[1;32m   1184\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1185\u001b[0m             \u001b[0;32mif\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_header\u001b[0m \u001b[0;32mand\u001b[0m \u001b[0mheader\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 1186\u001b[0;31m                 uproot.deserialization.numbytes_check(\n\u001b[0m\u001b[1;32m   1187\u001b[0m                     \u001b[0mchunk\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1188\u001b[0m                     \u001b[0mstart_cursor\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/.local/lib/python3.8/site-packages/uproot/deserialization.py\u001b[0m in \u001b[0;36mnumbytes_check\u001b[0;34m(chunk, start_cursor, stop_cursor, num_bytes, classname, context, file_path)\u001b[0m\n\u001b[1;32m    167\u001b[0m         \u001b[0mobserved\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mstop_cursor\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mdisplacement\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mstart_cursor\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    168\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0mobserved\u001b[0m \u001b[0;34m!=\u001b[0m \u001b[0mnum_bytes\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 169\u001b[0;31m             raise DeserializationError(\n\u001b[0m\u001b[1;32m    170\u001b[0m                 \"\"\"expected {0} bytes but cursor moved by {1} bytes (through {2})\"\"\".format(\n\u001b[1;32m    171\u001b[0m                     \u001b[0mnum_bytes\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mobserved\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mclassname\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;31mDeserializationError\u001b[0m: while reading\n\n    nEXO::FileMetaData version 1 as uproot.dynamic.Model_nEXO_3a3a_FileMetaData_v1 (439 bytes)\n        (base): <TObject None None at 0x7f146c37db50>\n        m_NavPath: <STLVector ['/Event/Sim', '/Event/Elec'] at 0x7f146c37dc70>\n        m_UUIDList: <STLVector ['b663fffe-33e2-11ed-b44b-d7144f86beef'] at 0x7f146c37dcd0>\nBase classes for nEXO::FileMetaData: (TObject)\nMembers for nEXO::FileMetaData: (m_NavPath), (m_UUIDList), m_BreakPoints, m_TreeMetaDatas, m_NavPriority\n\nexpected 16 bytes but cursor moved by 28 bytes (through std::map<std::string, std::vector<int64_t>>)\nin file /home/wrkshp/nexo/slurm_data/Tl208/ExternalGammas_light-v2-Tl208-5000-seed53.root\nin object /Meta/FileMetaData;1"
+     ]
+    }
+   ],
+   "source": [
+    "FI=file_dict_from_file(\"/home/wrkshp/nexo/slurm_data/Tl208/ExternalGammas_light-v2-Tl208-5000-seed53.root\")\n",
+    "\n",
+    "FI\n",
+    "rf =uproot.open(FI[\"root_filename\"])\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n",
+    "#rf.close()\n",
+    "\n",
+    "rf.keys()\n",
+    "#ExternalGammas_light-v2-Tl208-5000-seed53.root\n",
+    "\n",
+    "rf[\"Meta/FileMetaData\"]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#if 1==1:\n",
+    "    \n",
+    "def simplecombtree(file=\"\",newfilename=\"\"):\n",
+    "#    file =\"/home/wrkshp/nexo/slurm_data/Tl208/ExternalGammas_light-v3-Tl208-5000-seed20.root\"\n",
+    "    sens_Treenames=[\"Event/Recon/Energy\",\"Event/Recon/Standoff\"\n",
+    "                   ,\"Event/Recon/ChargeQuanta\",\"Event/Recon/Photons\"\n",
+    "                   ,\"Event/Recon/DNNTag\",\"Event/Recon/NESTBugFlag\"]\n",
+    "    root_Treenames=[\"Event/Sim/SimEvent\"]\n",
+    "    root_bnames=[\"fGenX\"\n",
+    "                ,\"fGenY\"\n",
+    "                ,\"fGenZ\"\n",
+    "                ]\n",
+    "    senstreelen=len(sens_Treenames)\n",
+    "    \n",
+    "    Treenames=sens_Treenames+root_Treenames\n",
+    "    \n",
+    "    sens_Tree_basename =\"Event/Recon/\"\n",
+    "    root_Tree_basename =\"Event/Sim/\"\n",
+    "    \n",
+    "    Tree_basename=[sens_Tree_basename,root_Tree_basename]\n",
+    "    \n",
+    "    \n",
+    "    filedict=file_dict_from_file(file)\n",
+    "    Seed=filedict[\"Seed\"]\n",
+    "    Nevts=filedict[\"NumEvents\"]\n",
+    "    \n",
+    "    \n",
+    "    \n",
+    "    BR=1.0\n",
+    "    if file.find(\"Tl208\") >= 1:\n",
+    "        BR=0.3594\n",
+    "    \n",
+    "    \n",
+    "    #newrootfile=uproot.recreate(newfile)\n",
+    "    trees=[]\n",
+    "\n",
+    "    treesinfo=[]\n",
+    "    bdicts={}\n",
+    "    b_dicts_info={}\n",
+    "    branches=[]\n",
+    "    bb=0\n",
+    "\n",
+    "    for i,tname in enumerate(Treenames):\n",
+    "        #print(tname)\n",
+    "        if i < senstreelen:\n",
+    "            base_sel=0\n",
+    "        else:\n",
+    "            base_sel=1\n",
+    "        \n",
+    "        \n",
+    "        branchname=tname.replace(Tree_basename[base_sel],\"\")\n",
+    "        \n",
+    "        filename=\"\"\n",
+    "        if i==0:\n",
+    "            filename=filedict[\"sens_filename\"]\n",
+    "            rootfile=uproot.open(filename)\n",
+    "            #print(\"opening, \",filename)\n",
+    "            \n",
+    "            \n",
+    "        elif i <senstreelen:\n",
+    "            keys=rootfile.keys()\n",
+    "            if tname+\";1\" in keys:\n",
+    "                #print(\"Good\")\n",
+    "                aaa=\"AAA\"\n",
+    "            else:\n",
+    "                print(\"issue with file and branch\")\n",
+    "                #print(branchname, filename)\n",
+    "        \n",
+    "        else:\n",
+    "            try:\n",
+    "                keys=rootfile.keys()\n",
+    "                #print(\"\\t\\t\",branchname, \"\\t\",filename)\n",
+    "                if tname+\";1\" in keys:\n",
+    "                    #print(tname, \" is in file\")\n",
+    "                    aaa=\"AAA\"\n",
+    "                else:\n",
+    "                    #print(\"Openning new file, end of sens\")\n",
+    "                    filename=filedict[\"root_filename\"]\n",
+    "                    rootfile.close()\n",
+    "                    #print(filename)\n",
+    "                    rootfile=uproot.open(filename)\n",
+    "                    #print(rootfile.keys())\n",
+    "            except:    \n",
+    "                #print(\"Openning new file due to try\")\n",
+    "                filename=filedict[\"root_filename\"]\n",
+    "                rootfile=uproot.open(filename)\n",
+    "            \n",
+    "            #filename=filedict[\"sens_filename\"]\n",
+    "            #rootfile=uproot.open(filename)\n",
+    "        \n",
+    "      #  print(len(trees))\n",
+    "        treeinfo={}\n",
+    "        \n",
+    "        if base_sel==1:\n",
+    "            basepath=\"%s\"%(tname)\n",
+    "        else:\n",
+    "            basepath=\"%s/%s\"%(tname,branchname)\n",
+    "        \n",
+    "        #continue\n",
+    "        #print(basepath)\n",
+    "        try:\n",
+    "            trees.append(rootfile[\"%s/%s\"%(tname,branchname)])\n",
+    "            treeinfo[\"name\"]=branchname\n",
+    "            treeinfo[\"path\"]=\"%s\"%(basepath)\n",
+    "            treeinfo[\"branch\"]=rootfile[\"%s/%s\"%(basepath,branchname)]\n",
+    "        except:\n",
+    "            print(\"Issue with \",tname, \" on file \",file) \n",
+    "            \n",
+    "            return 0   \n",
+    "        #print(\"%s/%s\"%(basepath,branchname))\n",
+    "        #print(treeinfo[\"branch\"].keys())\n",
+    "        if True: \n",
+    "            try :\n",
+    "                enumerate(treeinfo[\"branch\"].keys())\n",
+    "                #print(\"Looking good\")\n",
+    "            except :\n",
+    "                print(\"Error\")\n",
+    "                continue\n",
+    "            \n",
+    "            \n",
+    "            for j, bname in enumerate(treeinfo[\"branch\"].keys()):\n",
+    "                if j < 4:\n",
+    "                    continue \n",
+    "                \n",
+    "                if base_sel==1:\n",
+    "                    if bname not in root_bnames:\n",
+    "                        #print(\"Skipping: not wantted\")\n",
+    "                        continue\n",
+    "                \n",
+    "                \n",
+    "                #print(\"bname\",bname)    \n",
+    "                bdict={}\n",
+    "                bdict[\"name\"]=bname\n",
+    "                bdict[\"values\"]=treeinfo[\"branch\"][bname].array()\n",
+    "                bnamepath=\"%s/%s/%s\"%(basepath,branchname,bname)\n",
+    "                #print(bnamepath)\n",
+    "                branches.append(rootfile[bnamepath])\n",
+    "                #bdicts.append(bdict)\n",
+    "                bdicts[bname]=treeinfo[\"branch\"][bname].array()\n",
+    "                entries=len(bdicts[bname])\n",
+    "                b_dicts_info[bname]=type(bdict[\"values\"][0])\n",
+    "                #print(\"\\t\\t\\t\\t \",len(bdicts),\"  \",len(b_dicts_info))\n",
+    "    #print(\"Done with branches\")\n",
+    "    \n",
+    "    bdicts[\"Branch_ratio\"]= ak.highlevel.Array([BR]*(entries))\n",
+    "    bdicts[\"Seed\"]= ak.highlevel.Array([seed]*(entries))\n",
+    "    bdicts[\"Nevts\"]= ak.highlevel.Array([nevts]*(entries))\n",
+    "  \n",
+    "    b_dicts_info[\"Branch_ratio\"]= type(bdict[\"values\"][0]) \n",
+    "    b_dicts_info[\"Seed\"]= type(bdict[\"values\"][0]) \n",
+    "    b_dicts_info[\"Nevts\"]= type(bdict[\"values\"][0]) \n",
+    "    with uproot3.recreate(newfilename) as f:\n",
+    "        f[\"nexo\"] = uproot3.newtree(b_dicts_info,title=\"\")\n",
+    "\n",
+    "        f[\"nexo\"].extend(bdicts)\n",
+    "    \n",
+    "    f.close()\n",
+    "    \n",
+    "    \n",
+    "    \n",
+    "    \n",
+    "    return f[\"nexo\"]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "NameError",
+     "evalue": "name 'rootfile' is not defined",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mNameError\u001b[0m                                 Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-6-e79eb7145a88>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0mrootfile\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m\"Event/Sim/SimEvent/SimEvent\"\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mkeys\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;31mNameError\u001b[0m: name 'rootfile' is not defined"
+     ]
+    }
+   ],
+   "source": [
+    "rootfile[\"Event/Sim/SimEvent/SimEvent\"].keys()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "print()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#simpletree(file,newfile)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "scrolled": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Tl208 -v4 0  is missing\n",
+      "Finished , 1\n",
+      "Finished , 2\n",
+      "Finished , 3\n",
+      "Finished , 4\n",
+      "Finished , 5\n",
+      "Finished , 6\n",
+      "Finished , 7\n",
+      "Finished , 8\n",
+      "Finished , 9\n",
+      "Finished , 10\n",
+      "Finished , 11\n",
+      "Finished , 12\n",
+      "Finished , 13\n",
+      "Finished , 14\n",
+      "Finished , 15\n",
+      "Finished , 16\n",
+      "Finished , 17\n",
+      "Finished , 18\n",
+      "Finished , 19\n",
+      "Finished , 20\n",
+      "Tl208 -v4 21  is missing\n",
+      "Tl208 -v4 22  is missing\n",
+      "Tl208 -v4 23  is missing\n",
+      "Tl208 -v4 24  is missing\n",
+      "Tl208 -v4 25  is missing\n",
+      "Tl208 -v4 26  is missing\n",
+      "Tl208 -v4 27  is missing\n",
+      "Tl208 -v4 28  is missing\n",
+      "Tl208 -v4 29  is missing\n",
+      "Tl208 -v4 30  is missing\n",
+      "Tl208 -v4 31  is missing\n",
+      "Tl208 -v4 32  is missing\n",
+      "Tl208 -v4 33  is missing\n",
+      "Tl208 -v4 34  is missing\n",
+      "Tl208 -v4 35  is missing\n",
+      "Tl208 -v4 36  is missing\n",
+      "Tl208 -v4 37  is missing\n",
+      "Tl208 -v4 38  is missing\n",
+      "Tl208 -v4 39  is missing\n",
+      "Tl208 -v4 40  is missing\n",
+      "Tl208 -v4 41  is missing\n",
+      "Tl208 -v4 42  is missing\n",
+      "Tl208 -v4 43  is missing\n",
+      "Tl208 -v4 44  is missing\n",
+      "Tl208 -v4 45  is missing\n",
+      "Tl208 -v4 46  is missing\n",
+      "Tl208 -v4 47  is missing\n",
+      "Tl208 -v4 48  is missing\n",
+      "Tl208 -v4 49  is missing\n",
+      "Tl208 -v4 50  is missing\n",
+      "Tl208 -v4 51  is missing\n",
+      "Tl208 -v4 52  is missing\n",
+      "Tl208 -v4 53  is missing\n",
+      "Tl208 -v4 54  is missing\n",
+      "Tl208 -v4 55  is missing\n",
+      "Tl208 -v4 56  is missing\n",
+      "Tl208 -v4 57  is missing\n",
+      "Tl208 -v4 58  is missing\n",
+      "Tl208 -v4 59  is missing\n",
+      "Tl208 -v4 60  is missing\n",
+      "Tl208 -v4 61  is missing\n",
+      "Tl208 -v4 62  is missing\n",
+      "Tl208 -v4 63  is missing\n",
+      "Tl208 -v4 64  is missing\n",
+      "Tl208 -v4 65  is missing\n",
+      "Tl208 -v4 66  is missing\n",
+      "Tl208 -v4 67  is missing\n",
+      "Tl208 -v4 68  is missing\n",
+      "Tl208 -v4 69  is missing\n",
+      "Tl208 -v4 70  is missing\n",
+      "Tl208 -v4 71  is missing\n",
+      "Tl208 -v4 72  is missing\n",
+      "Tl208 -v4 73  is missing\n",
+      "Tl208 -v4 74  is missing\n",
+      "Tl208 -v4 75  is missing\n",
+      "Tl208 -v4 76  is missing\n",
+      "Tl208 -v4 77  is missing\n",
+      "Tl208 -v4 78  is missing\n",
+      "Tl208 -v4 79  is missing\n",
+      "Tl208 -v4 80  is missing\n",
+      "Tl208 -v4 81  is missing\n",
+      "Tl208 -v4 82  is missing\n",
+      "Tl208 -v4 83  is missing\n",
+      "Tl208 -v4 84  is missing\n",
+      "Tl208 -v4 85  is missing\n",
+      "Tl208 -v4 86  is missing\n",
+      "Tl208 -v4 87  is missing\n",
+      "Tl208 -v4 88  is missing\n",
+      "Tl208 -v4 89  is missing\n",
+      "Tl208 -v4 90  is missing\n",
+      "Tl208 -v4 91  is missing\n",
+      "Tl208 -v4 92  is missing\n",
+      "Tl208 -v4 93  is missing\n",
+      "Tl208 -v4 94  is missing\n",
+      "Tl208 -v4 95  is missing\n",
+      "Tl208 -v4 96  is missing\n",
+      "Tl208 -v4 97  is missing\n",
+      "Tl208 -v4 98  is missing\n",
+      "Tl208 -v4 99  is missing\n",
+      "Tl208 -v4 100  is missing\n",
+      "Tl208 -v4 101  is missing\n",
+      "Tl208 -v4 102  is missing\n",
+      "Tl208 -v4 103  is missing\n",
+      "Tl208 -v4 104  is missing\n",
+      "Tl208 -v4 105  is missing\n",
+      "Tl208 -v4 106  is missing\n",
+      "Tl208 -v4 107  is missing\n",
+      "Tl208 -v4 108  is missing\n",
+      "Tl208 -v4 109  is missing\n",
+      "Tl208 -v4 110  is missing\n",
+      "Tl208 -v4 111  is missing\n",
+      "Tl208 -v4 112  is missing\n",
+      "Tl208 -v4 113  is missing\n",
+      "Tl208 -v4 114  is missing\n",
+      "Tl208 -v4 115  is missing\n",
+      "Tl208 -v4 116  is missing\n",
+      "Tl208 -v4 117  is missing\n",
+      "Tl208 -v4 118  is missing\n",
+      "Tl208 -v4 119  is missing\n",
+      "Tl208 -v4 120  is missing\n",
+      "Tl208 -v4 121  is missing\n",
+      "Tl208 -v4 122  is missing\n",
+      "Tl208 -v4 123  is missing\n",
+      "Tl208 -v4 124  is missing\n",
+      "Tl208 -v4 125  is missing\n",
+      "Tl208 -v4 126  is missing\n",
+      "Tl208 -v4 127  is missing\n",
+      "Tl208 -v4 128  is missing\n",
+      "Tl208 -v4 129  is missing\n",
+      "Tl208 -v4 130  is missing\n",
+      "Tl208 -v4 131  is missing\n",
+      "Tl208 -v4 132  is missing\n",
+      "Tl208 -v4 133  is missing\n",
+      "Tl208 -v4 134  is missing\n",
+      "Tl208 -v4 135  is missing\n",
+      "Tl208 -v4 136  is missing\n",
+      "Tl208 -v4 137  is missing\n",
+      "Tl208 -v4 138  is missing\n",
+      "Tl208 -v4 139  is missing\n",
+      "Tl208 -v4 140  is missing\n",
+      "Tl208 -v4 141  is missing\n",
+      "Tl208 -v4 142  is missing\n",
+      "Tl208 -v4 143  is missing\n",
+      "Tl208 -v4 144  is missing\n",
+      "Tl208 -v4 145  is missing\n",
+      "Tl208 -v4 146  is missing\n",
+      "Tl208 -v4 147  is missing\n",
+      "Tl208 -v4 148  is missing\n",
+      "Tl208 -v4 149  is missing\n",
+      "Tl208 -v4 150  is missing\n",
+      "Tl208 -v4 151  is missing\n",
+      "Tl208 -v4 152  is missing\n",
+      "Tl208 -v4 153  is missing\n",
+      "Tl208 -v4 154  is missing\n",
+      "Tl208 -v4 155  is missing\n",
+      "Tl208 -v4 156  is missing\n",
+      "Tl208 -v4 157  is missing\n",
+      "Tl208 -v4 158  is missing\n",
+      "Tl208 -v4 159  is missing\n",
+      "Tl208 -v4 160  is missing\n",
+      "Tl208 -v4 161  is missing\n",
+      "Tl208 -v4 162  is missing\n",
+      "Tl208 -v4 163  is missing\n",
+      "Tl208 -v4 164  is missing\n",
+      "Tl208 -v4 165  is missing\n",
+      "Tl208 -v4 166  is missing\n",
+      "Tl208 -v4 167  is missing\n",
+      "Tl208 -v4 168  is missing\n",
+      "Tl208 -v4 169  is missing\n",
+      "Tl208 -v4 170  is missing\n",
+      "Tl208 -v4 171  is missing\n",
+      "Tl208 -v4 172  is missing\n",
+      "Tl208 -v4 173  is missing\n",
+      "Tl208 -v4 174  is missing\n",
+      "Tl208 -v4 175  is missing\n",
+      "Tl208 -v4 176  is missing\n",
+      "Tl208 -v4 177  is missing\n",
+      "Tl208 -v4 178  is missing\n",
+      "Tl208 -v4 179  is missing\n",
+      "Tl208 -v4 180  is missing\n",
+      "Tl208 -v4 181  is missing\n",
+      "Tl208 -v4 182  is missing\n",
+      "Tl208 -v4 183  is missing\n",
+      "Tl208 -v4 184  is missing\n",
+      "Tl208 -v4 185  is missing\n",
+      "Tl208 -v4 186  is missing\n",
+      "Tl208 -v4 187  is missing\n",
+      "Tl208 -v4 188  is missing\n",
+      "Tl208 -v4 189  is missing\n",
+      "Tl208 -v4 190  is missing\n",
+      "Tl208 -v4 191  is missing\n",
+      "Tl208 -v4 192  is missing\n",
+      "Tl208 -v4 193  is missing\n",
+      "Tl208 -v4 194  is missing\n",
+      "Tl208 -v4 195  is missing\n",
+      "Tl208 -v4 196  is missing\n",
+      "Tl208 -v4 197  is missing\n",
+      "Tl208 -v4 198  is missing\n",
+      "Tl208 -v4 199  is missing\n",
+      "Tl208 -v4 200  is missing\n"
+     ]
+    }
+   ],
+   "source": [
+    "#tgt=\"Th228\"\n",
+    "version=\"-v4\"\n",
+    "target_chain=[\"Tl208\"]#,\"Tl208\",\"Ra224\",\"Pb212\",\"Bi212\"]\n",
+    "\n",
+    "#target_chain=[\"Ra226\",\"Pb214\", \"Bi214\", \"Bi210\", \"Pb206\"]\n",
+    "\n",
+    "\n",
+    "\n",
+    "#target_chain=[\"Ra224\"]\n",
+    "#target_chain=[\"Pb212\"]\n",
+    "#target_chain=[\"Bi212\"]\n",
+    "#target_chain=[\"Cs137\"]\n",
+    "#target_chain=[\"Co60\"]\n",
+    "#target_chain=[\"Th228\"]\n",
+    "#target_chain=[\"Pb206\"]\n",
+    "#seed=55\n",
+    "nevts=5000\n",
+    "repeat=True\n",
+    "#repeat=False\n",
+    "\n",
+    "#tgt=\"Tl208\"\n",
+    "\n",
+    "#repeat=True\n",
+    "#seed =55\n",
+    "\n",
+    "\n",
+    "Missing_list=[]\n",
+    "\n",
+    "#file = \"/home/wrkshp/nexo/slurm_data/recon/ExternalGammas_light-%s-%i-seed%i_sensrecon.root\"%(tgt,nevts,seed)\n",
+    "#newfile = \"/home/wrkshp/nexo/slurm_data/sens/%s-seed%i_sens.root\"%(tgt,seed)\n",
+    "#Fullfilename=\"/home/wrkshp/nexo/slurm_data/sens/%s-sens.root\"%(tgt)\n",
+    "\n",
+    "#with uproot3.recreate(Fullfilename) as Fullfile:\n",
+    "for tgt in target_chain:\n",
+    "    if True  :  \n",
+    "\n",
+    "        for seed in range(0,200+1,1):\n",
+    "            file = \"/home/wrkshp/nexo/slurm_data/%s/ExternalGammas_light%s-%s-%i-seed%i.root\"%(tgt,version,tgt,nevts,seed)            \n",
+    "            filerec = \"/home/wrkshp/nexo/slurm_data/recon/ExternalGammas_light%s-%s-%i-seed%i_sensrecon.root\"%(version,tgt,nevts,seed)            \n",
+    "            #print(file)\n",
+    "            newfile = \"/home/wrkshp/nexo/slurm_data/sens/%s%s-seed%i.root\"%(tgt,version,seed)\n",
+    "            Missing={}\n",
+    "            if os.path.exists(newfile):\n",
+    "                if not repeat:\n",
+    "                    #print(\"Skipping seed\",seed)\n",
+    "                    continue\n",
+    "\n",
+    "            if os.path.exists(file) and os.path.exists(filerec) :\n",
+    "                \n",
+    "                T=simplecombtree(file,newfile)\n",
+    "                if T==0:\n",
+    "                    print(\"Error with \",seed)\n",
+    "                    Missing[\"Target\"]=tgt\n",
+    "                    Missing[\"Seed\"]=seed\n",
+    "                    Missing_list.append(Missing)\n",
+    "                else:\n",
+    "                    print(\"Finished ,\", seed)\n",
+    "            else:\n",
+    "                print(tgt, version,seed ,\" is missing\")\n",
+    "                Missing[\"Target\"]=tgt\n",
+    "                Missing[\"Seed\"]=seed\n",
+    "                \n",
+    "                Missing_list.append(Missing)\n",
+    "\n",
+    "Missing_df=pd.DataFrame.from_dict(Missing_list)                \n",
+    "                \n",
+    "\n",
+    "            \n",
+    "#Fullfile.close()            "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "64\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(len(Missing_list))\n",
+    "try:\n",
+    "    Missing_df_Pb=Missing_df.query(\"Target == 'Tl208'\")\n",
+    "    Missing_df_Pb\n",
+    "except:\n",
+    "    print(\"No missing?\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    " #def missingstring(misslist,cuts):\n",
+    "if 1:\n",
+    "    misslist=Missing_df\n",
+    "    cuts=\"Target == 'Tl208'\"\n",
+    "    DF=misslist.query(cuts)\n",
+    "    seeds = \"\"\n",
+    "    for i in DF[\"Seed\"]:\n",
+    "        seeds = seeds+\",%i\"%i\n",
+    "    seeds=seeds[1:]\n",
+    "    print (seeds)\n",
+    "    #return seeds\n",
+    "    "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ExternalGammas_light-v2-Tl208-5000-seed1_sensrecon.root"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "branches\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "type(rootfile[\"Event/Recon/%s/%s\"%(tname,tname)])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "tt=uproot.TTree\n",
+    "tt"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#newfile[\"T\"]\n",
+    "\n",
+    "\n",
+    "#newfile[\"T\"].extend(bdicts)\n",
+    "tt.name=\"T\"\n",
+    "tt.name\n",
+    "\n",
+    "tt.branches=bdicts\n",
+    "tt.branches"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "newrootfile=uproot.recreate(newfile)\n",
+    "\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "type(tt.branches)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "newrootfile[\"T\"]=tt"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "t=rootfile[\"Event/Recon/%s/%s\"%(tname,tname)]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "'DNNTag/m_DNNvalue't['DNNTag/m_DNNvalue'].array()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "T=uproot.TTree\n",
+    "print(T.name,\"\\n\",\n",
+    "T.title,\"\\n\",\n",
+    "T.branches\n",
+    "     )"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "T.name=\"T\"\n",
+    "T.branches=branches"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "T.branches"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "newfile"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import uproot3"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "scrolled": false
+   },
+   "outputs": [],
+   "source": [
+    "bdicts"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "nfile=uproot3.recreate(\"tmp.root\", compression=uproot3.ZLIB(4))\n",
+    "nfile[\"t\"]=uproot3.newtree(b_dicts_info )\n",
+    "nfile[\"t\"].extend(bdicts)      \n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "newtree = uproot3.newtree(b_dicts_info)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "type(bdicts)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "with uproot3.recreate(\"example.root\") as f:\n",
+    "    f[\"t\"] = uproot3.newtree(b_dicts_info,title=\"TTree title\")\n",
+    "    #for i,b in enumerate(bdicts):\n",
+    "    #f[\"t\"].newbranch()\n",
+    "    f[\"t\"].extend(bdicts)\n",
+    "f.close()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "f"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "50*5000"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "f['t/energy'].array()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "len(bdicts)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "rfile=uproot.open(\"/home/wrkshp/nexo/slurm_data/sens/Co60-seed1.root\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "rfile.keys()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "tgt=\"Tl208\"\n",
+    "version=\"-v2\"\n",
+    "nevts=5000\n",
+    "seed=55\n",
+    "\n",
+    "file = \"/home/wrkshp/nexo/slurm_data/Tl208/ExternalGammas_light%s-%s-%i-seed%i.root\"%(version,tgt,nevts,seed)\n",
+    "newfilename = \"/home/wrkshp/nexo/slurm_data/sens/%s%s-seed%i.root\"%(tgt,version,seed)\n",
+    "\n",
+    "\n",
+    "rfile=uproot.open(file)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "rfile[\"Event/Sim/SimEvent/fGenParticleID\"].values()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "Energy_hist,Energy_bin_edges=np.histogram(\n",
+    "        np.array(T[\"energy\"].array()),bins=nbins,range=binrange)\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.4"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
