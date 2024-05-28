@@ -1,0 +1,9 @@
+labview_data/*
+*.root
+*.tar.gz
+*.png
+*.csv
+*.tar
+*.h5
+./Ext_src_cal/data/*
+Lab028\osci\data\*
