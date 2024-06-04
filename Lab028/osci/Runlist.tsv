@@ -166,4 +166,26 @@ RN	Date	Config Number	Run Number	Configuration	type	Anode Voltage	Cathode Voltag
 165	20240531	131	00165	SingleGrid_20mm	Production	200	600	28	789	vacuum			0	347	344	325					50	Vacuum measurements
 166	20240531	131	00166	SingleGrid_20mm	Production	200	200	28	789	vacuum			0	347	344	325					50	Vacuum measurements
 167	20240531	131	00167	SingleGrid_20mm	Production	200	400	28	789	vacuum			0	347	344	325					50	Vacuum measurements
+168	20240604	131	00168	SingleGrid_20mm	Production	200	400	28	789	Gas Xenon			16.01	295.5	295.2	295.2					50	Gas measurements
+169	20240604	131	00169	SingleGrid_20mm	Production	200	600	28	789	Gas Xenon			16.01	295.5	295.2	295.2					50	Gas measurements
+170	20240604	131	00170	SingleGrid_20mm	Production	200	1000	28	789	Gas Xenon			16.01	295.5	295.2	295.2					50	Gas measurements
+171	20240604	131	00171	SingleGrid_20mm	Production	200	1400	28	789	Gas Xenon			16.01	295.4	295.2	295.2					50	Gas measurements
+172	20240604	131	00172	SingleGrid_20mm	Production	200	1600	28	789	Gas Xenon			16.01	295.4	295.2	295.2					50	Gas measurements (high voltage)
+173	20240604	131	00173	SingleGrid_20mm	Production	200	1800	28	789	Gas Xenon			16.01	295.4	295.1	295.1					50	Gas measurements (high voltage)
+174	20240604	131	00174	SingleGrid_20mm	Production	200	500	28	789	Gas Xenon			16.01	295.4	295.1	295.1					50	Gas measurements
+175	20240604	131	00175	SingleGrid_20mm	Production	200	700	28	789	Gas Xenon			16.01	295.4	295.1	295.1					50	Gas measurements
+176	20240604	131	00176	SingleGrid_20mm	Production	200	900	28	789	Gas Xenon			16.01	295.4	295.1	295.1					50	Gas measurements
+177	20240604	131	00177	SingleGrid_20mm	Production	200	50	28	789	Gas Xenon			16.01	295.4	295.1	295.1					50	Gas measurements (low voltage)
+178	20240604	131	00178	SingleGrid_20mm	Production	200	600	28	789	Gas Xenon			16.01	295.4	295.1	295.1					50
+179	20240604	131	00179	SingleGrid_20mm	Production	200	300	28	789	Gas Xenon			16.01	295.4	295.1	295.1					50
+180	20240604	131	00180	SingleGrid_20mm	Production	200	1000	28	789	Gas Xenon			16.01	295.4	295.1	295.1					50	
+181	20240604	131	00181	SingleGrid_20mm	Production	200	1199.6	28	789	Gas Xenon			16.01	295.4	295.1	295.1					50
+182	20240604	131	00182	SingleGrid_20mm	Production	200	199.8	28	789	Gas Xenon			16.01	295.4	295.1	295.1					50	
+183	20240604	131	00183	SingleGrid_20mm	Production	200	200	28	789	Gas Xenon			20	295.4	295.2	295.3					50	
+184	20240604	131	00184	SingleGrid_20mm	Production	200	500	28	789	Gas Xenon			20	295.4	295.2	295.3					50
+185	20240604	131	00185	SingleGrid_20mm	Production	200	1000	28	789	Gas Xenon			20	295.4	295.2	295.2					50
+186	20240604	131	00186	SingleGrid_20mm	Production	200	1250	28	789	Gas Xenon			20	295.4	295.1	295.2					50
+186	20240604	131	00186	SingleGrid_20mm	Production	200	1250	28	789	Gas Xenon			20	295.4	295.1	295.2					50	
+187	20240604	231	00187	SingleGrid_20mm	Noise	200	0	28	789	Gas Xenon			20	295.4	295.1	295.1					50	No cathode voltage
+188	20240604	231	00188	SingleGrid_20mm	Noise	200	0	28	789	Gas Xenon			20	295.4	295.1	295.1					200	No cathode voltage
 
