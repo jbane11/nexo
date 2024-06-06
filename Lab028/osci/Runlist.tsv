@@ -185,7 +185,31 @@ RN	Date	Config Number	Run Number	Configuration	type	Anode Voltage	Cathode Voltag
 184	20240604	131	00184	SingleGrid_20mm	Production	200	500	28	789	Gas Xenon			20	295.4	295.2	295.3					50
 185	20240604	131	00185	SingleGrid_20mm	Production	200	1000	28	789	Gas Xenon			20	295.4	295.2	295.2					50
 186	20240604	131	00186	SingleGrid_20mm	Production	200	1250	28	789	Gas Xenon			20	295.4	295.1	295.2					50
-186	20240604	131	00186	SingleGrid_20mm	Production	200	1250	28	789	Gas Xenon			20	295.4	295.1	295.2					50	
 187	20240604	231	00187	SingleGrid_20mm	Noise	200	0	28	789	Gas Xenon			20	295.4	295.1	295.1					50	No cathode voltage
 188	20240604	231	00188	SingleGrid_20mm	Noise	200	0	28	789	Gas Xenon			20	295.4	295.1	295.1					200	No cathode voltage
-
+189	20240605	131	00189	SingleGrid_20mm	Production	200	1250	28	789	Gas Xenon			19.9	295.3	295.1	295.1					50	Pressure fluctuations
+190	20240605	131	00190	SingleGrid_20mm	Production	200	1000	28	789	Gas Xenon			19.9	295.3	295.1	295.1					50	
+191	20240605	131	00191	SingleGrid_20mm	Production	200	500	28	789	Gas Xenon			19.9	295.3	295	295.1					50	
+192	20240605	131	00192	SingleGrid_20mm	Production	200	200	28	789	Gas Xenon			19.9	295.3	295	295					50
+193	20240605	131	00193	SingleGrid_20mm	Production	200	750	28	789	Gas Xenon			19.9	295.3	295	295					50
+194	20240605	131	00194	SingleGrid_20mm	Production	200	1500	28	789	Gas Xenon			19.9	295.3	295	295					50	
+195	20240605	131	00195	SingleGrid_20mm	Production	200	1600	28	789	Gas Xenon			19.9	295.3	295	295					50	
+196	20240605	131	00196	SingleGrid_20mm	Production	200	1700	28	789	Gas Xenon			19.9	295.3	295	295					50	Shorting occurred
+197	20240605	131	00197	SingleGrid_20mm	Production	200	1750	28	789	Gas Xenon			19.9	295.3	295	295					50	
+198	20240605	131	00198	SingleGrid_20mm	Production	200	1000	28	789	Gas Xenon			17.6	244.6	250.9	275.8					50	Cold gas
+199	20240605	131	00199	SingleGrid_20mm	Production	200	800	28	789	Gas Xenon			17.5	242.7	249.7	275.6					50	
+200	20240605	131	00200	SingleGrid_20mm	Production	200	600	28	789	Gas Xenon			17.6	244.3	249.3	275.4					50	
+201	20240605	131	00201	SingleGrid_20mm	Production	200	400	28	789	Gas Xenon			17.7	250.4	251.7	275.3					50	
+202	20240605	131	00202	SingleGrid_20mm	Production	200	200	28	789	Gas Xenon			17.7	249.2	252.1	275.2					50	
+203	20240605	131	00203	SingleGrid_20mm	Production	200	500	28	789	Gas Xenon			17.5	246.2	251.2	275.1					50	
+204	20240605	131	00204	SingleGrid_20mm	Production	200	750	28	789	Gas Xenon			17.5	244.4	250.3	275					50	
+205	20240605	131	00205	SingleGrid_20mm	Production	200	1250	28	789	Gas Xenon			17.7	249.8	250.9	274.8					50	
+206	20240605	131	00206	SingleGrid_20mm	Production	200	900	28	789	Gas Xenon			17.6	248.1	251.8	274.7					50	
+207	20240605	131	00207	SingleGrid_20mm	Production	200	1100	28	789	Gas Xenon			17.5	244.3	250.1	274.6					50
+208	20240605	131	00208	SingleGrid_20mm	Production	200	1100	28	789	Gas Xenon			18	250	250.9	274.5					50	Begin 18 psi cold gas runs
+209	20240605	131	00209	SingleGrid_20mm	Production	200	800	28	789	Gas Xenon			18	250	252	274.5					50	
+210	20240605	131	00210	SingleGrid_20mm	Production	200	600	28	789	Gas Xenon			17.8	244.7	250.1	274.4					50	Pressure dropped below 18
+211	20240605	131	00211	SingleGrid_20mm	Production	200	400	28	789	Gas Xenon			17.8	244.1	249.3	274.2					50	
+212	20240605	131	00212	SingleGrid_20mm	Production	200	200	28	789	Gas Xenon			18	250.8	251.9	274.3					50	
+213	20240605	131	00213	SingleGrid_20mm	Production	200	1500	28	789	Gas Xenon			17.8	243.5	249.3	274					50
+214	20240605	131	00214	SingleGrid_20mm	Production	200	1250	28	789	Gas Xenon			18	250.8	251.5	274					50
