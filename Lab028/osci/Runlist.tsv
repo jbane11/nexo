@@ -213,3 +213,31 @@ RN	Date	Config Number	Run Number	Configuration	type	Anode Voltage	Cathode Voltag
 212	20240605	131	00212	SingleGrid_20mm	Production	200	200	28	789	Gas Xenon			18	250.8	251.9	274.3					50	
 213	20240605	131	00213	SingleGrid_20mm	Production	200	1500	28	789	Gas Xenon			17.8	243.5	249.3	274					50
 214	20240605	131	00214	SingleGrid_20mm	Production	200	1250	28	789	Gas Xenon			18	250.8	251.5	274					50
+215	20240606	131	00215	SingleGrid_20mm	Production	200	1000	28	789	Liquid Xenon			17.2	178.9	181.1	253.2					50	Non-signal LXe run
+216	20240606	131	00216	SingleGrid_20mm	Production	200	1000	26	789	Liquid Xenon			17.3	179.2	181.3	253					50	
+217	20240606	131	00217	SingleGrid_20mm	Production	200	1000	29	789	Liquid Xenon			17.2	179.1	181.3	252.9					50	
+219	20240606	131	00219	SingleGrid_20mm	Production	200	1000	28	123	Liquid Xenon	5	181	16.9	179.6	181.6	251.8					50
+220	20240606	131	00220	SingleGrid_20mm	Production	200	1000	28	11	Liquid Xenon	5	181	16.8	179.7	181.7	251.7					50
+221	20240606	131	00221	SingleGrid_20mm	Production	200	1000	28	2567	Liquid Xenon	5	181	15.9	179	180.8	251.6					50	
+222	20240606	131	00222	SingleGrid_20mm	Production	200	1500	28	789	Liquid Xenon	5	181	16.3	179.6	181.4	251.6					50
+223	20240606	231	00223	SingleGrid_20mm	Noise	200	0	28	789	Liquid Xenon	5	180	16	179.4	181.3	251.4					50
+224	20240606	131	00224	SingleGrid_20mm	Production	200	500	28	789	Gas Xenon			7.7	199.5	203.1	256.2					50	During recovery + phase change
+225	20240610	131	00225	SingleGrid_20mm	Production	200	500	28	789	Gas Xenon	5	210	18.4	203	209.8	262.9					50	Post temp connection refit - cold gas
+226	20240610	131	00226	SingleGrid_20mm	Production	200	1000	28	789	Gas Xenon	5	210	18.5	205.9	210.4	262.6					50	
+227	20240610	131	00227	SingleGrid_20mm	Production	200	1500	28	789	Gas Xenon	5	210	18.4	204.6	209.6	262.3					50	
+228	20240610	231	00228	SingleGrid_20mm	Noise	200	0	28	789	Gas Xenon	5	210	18.4	205.4	209.8	262					50	
+229	20240610	131	00229	SingleGrid_20mm	Production	200	250	28	789	Gas Xenon	5	210	18.5	206.4	210.2	262					50	
+230	20240610	131	00230	SingleGrid_20mm	Production	200	200	28	789	Gas Xenon	5	210	18.4	205.7	209.9	261.7					50	
+231	20240610	131	00231	SingleGrid_20mm	Production	200	1000	28	789	Gas Xenon	5	210	18.4	203.9	209.5	261.7					50	
+232	20240610	131	00232	SingleGrid_20mm	Production	200	1000	27.5	789	Gas Xenon	5	210	18.4	205.6	210.5	261.6					50	Varying laser power
+233	20240610	131	00233	SingleGrid_20mm	Production	200	1000	27	789	Gas Xenon	5	210	18.3	203.9	209.8	261.6					50	
+234	20240610	131	00234	SingleGrid_20mm	Production	200	1000	26.5	789	Gas Xenon	5	210	18.3	203.6	209.6	261.6					50	
+235	20240610	131	00235	SingleGrid_20mm	Production	200	1000	26	789	Gas Xenon	5	210	18.4	206.6	210.3	261.5					50	
+236	20240610	131	00236	SingleGrid_20mm	Production	200	1000	25.5	789	Gas Xenon	5	210	18.3	204.7	210.2	261.5					50	
+237	20240610	131	00237	SingleGrid_20mm	Production	200	1000	25	789	Gas Xenon	5	210	18.3	204.2	209.5	261.5					50	
+238	20240610	131	00238	SingleGrid_20mm	Production	200	1000	24.5	789	Gas Xenon	5	210	18.4	205.4	209.8	261.5					50	
+239	20240610	131	00239	SingleGrid_20mm	Production	200	1000	24	789	Gas Xenon	5	210	18.4	206.6	210.5	261.4					50	
+240	20240610	131	00240	SingleGrid_20mm	Production	200	1000	23.5	789	Gas Xenon	5	210	18.3	205.3	210.3	261.3					50	
+241	20240610	131	00241	SingleGrid_20mm	Production	200	1000	23	789	Gas Xenon	5	210	18.3	203.9	209.8	261.3					50	
+242	20240610	131	00242	SingleGrid_20mm	Production	200	1000	22.7	789	Gas Xenon	5	210	18.4	204.9	209.7	261.3					50	
+243	20240610	131	00243	SingleGrid_20mm	Production	200	1000	29	789	Gas Xenon	5	210	18.4	206.2	210.1	261.3					50	
