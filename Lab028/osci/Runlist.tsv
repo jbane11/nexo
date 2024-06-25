@@ -86,7 +86,7 @@ RN	Date	Config Number	Run Number	Configuration	type	Anode Voltage	Cathode Voltag
 85	20240523	131	00085	SingleGrid_20mm	Production	200.4	899.8	28	789	Liquid Xenon	5	180	18.7	178.2	180.3	257.6					50	
 86	20240523	131	00086	SingleGrid_20mm	Production	200.4	999.8	28	789	Liquid Xenon	5	180	18.5	178.01	180.2	257.6					50	
 87	20240523	231	00087	SingleGrid_20mm	Noise	200.4	0	28	789	Liquid Xenon	5	180	18.5	178.2	180.3	257.72					50	
-88	20240523	131	00088	SingleGrid_20mm	Production	200.4	1499.4	28	789	Liquid Xenon	5	180	18.15	177.9	180	257.7					50	
+88	20240523	131	00088	SingleGrid_20mm	Production	200.4	1499.9	28	789	Liquid Xenon	5	180	18.15	177.9	180	257.7					50	
 89	20240523	131	00089	SingleGrid_20mm	Production	200.4	999.8	28	321	Liquid Xenon	5	180	18	178	184.3	257.7					50	
 90	20240523	131	00090	SingleGrid_20mm	Production	200.4	798.8	28	321	Liquid Xenon	5	180	18.4	178	184.7	257.6					50	
 91	20240523	131	00091	SingleGrid_20mm	Production	200.4	600	28	321	Liquid Xenon	5	180	18	178	184.2	257.6					50	
