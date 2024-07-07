@@ -1,5 +1,7 @@
 labview_data/*
 ./Lab28/XeMassCalc/NistData/*
+*.cgi
+*.txt
 *.root
 *.tar.gz
 *.png
