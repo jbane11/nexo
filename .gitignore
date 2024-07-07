@@ -8,5 +8,6 @@ labview_data/*
 *.csv
 *.tar
 *.h5
+*.tsv
 ./Ext_src_cal/data/*
 Lab028\osci\data\*
