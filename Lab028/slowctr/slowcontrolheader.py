@@ -29,6 +29,19 @@ def timetosecs(timeinfo):
     return timeinfo["hour"]*60*60 +timeinfo["min"]*60+timeinfo["sec"]
 
 
+def create_dataframe_from_datasets(file_name, dataset_names):
+
+    with h5py.File(file_name, 'r') as f:
+        dataset_names =[]
+       
+        for i in f.keys():
+            for j in f[i].keys():
+                dataset_names.append(i+"/"+j)
+       
+        
+        dfs = {name: pd.DataFrame(f[name][:])   for name in dataset_names }
+    return dfs
+
 
 def calib_dict_wtime(file_name):
 
