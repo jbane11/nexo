@@ -37,6 +37,17 @@ groups = []
 datasets = []
 atts = {} # attributes
 
+def GetPhaseDiagram():
+    ''' Function to get the phase diagram info for xenon.
+    returns two arrays pressures and temps for phase lines '''
+    
+    pfilename="A/Labview20/slow control/plot/xpd/pressures.txt"
+    tfilename="A/Labview20/slow control/plot/xpd/temps.txt"
+    P = open(pfilename).readlines()
+    T = open(tfilename).readlines()
+    return P,T
+
+
 def gather_names_and_atts(name, obj):
     if isinstance(obj, h5py.Group):
         groups.append(name)
@@ -311,7 +322,7 @@ except:
 if  len(argv) > 2:
     channel = argv[2]
 else :
-    channel="Xenon Cell Bottom"
+    channel="Xe_Cell_Bottom"
     time_start_index=0
     time_stop_index=-1
 if len(argv) > 3:
@@ -335,17 +346,25 @@ DF=Get_SlowControl_DF(filedate)
 print(len(DF["Time"]))
 print(DF["Time"].iloc[int(time_start_index)],DF["Time"].iloc[int(time_stop_index)])
 DF=DF[int(time_start_index):int(time_stop_index)]
+#fig2,bx = plt.subplots()
 fig,ax = plt.subplots()
-fig2,bx = plt.subplots()
-ax.scatter(x=DF[channel],y=DF["Pressure_Cryostat"],c=DF["Time"]-DF["Time"].iloc[0])
+
+Phaswalk=ax.scatter(x=DF[channel],y=DF["Pressure_Cryostat"],c=DF["Time"]-DF["Time"].iloc[0])
 ax.set_xlabel("Temp [k]")
 ax.set_ylabel("Pressure [psia]")
-ax.set_xlim(180,190)
-plt.colorbar()
-ax.grid()
-ax.show()
 
-bx.errorbar(x=DF["Time"],y=DF["Flow_Meter"])
-bx.grid()
-bx.show()
+P,T = GetPhaseDiagram()
+ax.scatter(x=T, y=P, c="red")
+
+max=max(DF[channel])+2
+min=min(DF[channel])-2
+ax.set_xlim(min,max)
+fig.colorbar(Phaswalk)
+
+ax.grid()
+plt.show()
+
+#bx.errorbar(x=DF["Time"],y=DF["Flow_Meter"])
+#bx.grid()
+#plt.show()
 
