@@ -16,58 +16,32 @@ class Event:
         self.parameter = parameter
         self.value = value
 
-
-
 class Channel:
-    def __init__(self, name):
-        self.name = name
-        
-        self.parameters = {
-            "VSet": 0,
-            "ISet": 0,
-            "ChStatus": 0,
-            "power": 0,
-            "VMon":0,
-            "IMonL":0,
-            "IMonH":0,    
-        }
-    # Initialize history as an empty list of dictionaries
-        self.history = []
-    #Set all the setting parameters  
-    def newsets(self,vset,iset,status,power): 
-                
-        self.parameters = {
-            "vset": vset,
-            "iset": iset,
-            "status": status,
-            "power": power,
-        }
+    def __init__(self, Name: any):
+        self.name=Name
+        self.parameters = {}  # Dictionary to store parameter names and their associated arrays
 
-                   
+    def add_parameter(self, parameter_name: str, values: list):
+        """Adds a parameter and its associated values array to the channel."""
+        self.parameters[parameter_name] = values
 
-    def update_parameter(self, parameter, value, timestamp):
-        """Update a parameter and store the change in history."""
-        if parameter in self.parameters:
-            # Save the current state to history before updating
-            self.history.append({
-                "time": timestamp,
-                "parameter": parameter,
-                "old_value": self.parameters[parameter],
-                "new_value": value,
-            })
-            # Update the parameter
-            self.parameters[parameter] = value
-            print(f"Updated {parameter} to {value} at time {time.strftime('%Y-%m-%dT%H:%M:%S',timestamp)}")
+    def get_parameter(self, parameter_name: str):
+        """Retrieves the values array associated with a parameter name."""
+        return self.parameters.get(parameter_name, None)
+
+    def append_to_parameter(self, parameter_name: str, new_values: list):
+        """Appends new values to an existing parameter's array. 
+        If the parameter does not exist, it creates a new one."""
+        if parameter_name in self.parameters:
+            self.parameters[parameter_name].extend(new_values)
         else:
-            raise ValueError(f"Parameter '{parameter}' not recognized.")
-
-    def get_history(self):
-        """Return the history of changes."""
-        return self.history
+            self.add_parameter(parameter_name, new_values)
 
     def __str__(self):
-        params = ", ".join([f"{k}: {v}" for k, v in self.parameters.items()])
-        return f"Channel '{self.name}' with parameters: {params}"
+        return f"Channel with parameters: {self.parameters}"
+
+
+
 
 
 def argumentparse(argv):
@@ -115,9 +89,18 @@ def main(Args):
     
     Event_list=[]
     Channel_list=[Channel(0),Channel(1),Channel(2),Channel(3)]
+    parameter_list=["Time","VMon","IMonL","IMonH","VSet","ISet","ChStatus"]
+
+    #Build up channels and parameters
+    for channel in Channel_list:
+        for parameter in parameter_list:
+            channel.add_parameter(parameter,[0.0])
+
+    #Number of unique time stamps
+    event_count=1
 
 
-    for line in infile.readlines()[0:5]:
+    for line in infile.readlines()[0:2]:
 
         line_elements=line.split(" ")
 
@@ -128,43 +111,67 @@ def main(Args):
         timestamp = time.mktime(struct_time)
     
         #Grab channel, parameter and value
-        print(line_elements)
+        #print(line_elements)
         ch=line_elements[5][1:-1]
         par=line_elements[7][1:-1]
         val=line_elements[9][1:-2]
-        print(ch,par,val)
-
         
 
         if freshstep==0:
             freshstep=timestamp
             print("\n\tFirst Event")
-            #Inilaize parameters and new timestep   
-            Channel_list[int(ch)].update_parameter(par,val,struct_time)
+            print("\t",ch,par,val)
+            Channel_list[int(ch)].append_to_parameter(par,[val])
+            Channel_list[int(ch)].append_to_parameter("Time",[timestamp])
+            event_count+=1
+
+       
             
             #SingleEvent=Event(struct_time,)
 
         elif freshstep==timestamp:
             print("\n\t\t\tRepeat event")
-            
+            print("\t\t\t",ch,par,val)
+            Channel_list[int(ch)].append_to_parameter(par,[val])
             
 
             #Update parameters
         else:
             print("\n\t\tNewEvent")
-            for ch in Channel_list:
-                ch.get_history()
-            
-            
+            #append previous value all other parameters except time
+            for channel in Channel_list:
+                for parameter in parameter_list:
+                    length=len(channel.get_parameter(parameter))
+                    
+                    if length!=event_count:
+                        last_val=channel.get_parameter(parameter)[-1]
+                        Channel_list[int(ch)].append_to_parameter(par,[last_val])
+                    print(channel.name, parameter, length," :", channel.get_parameter(parameter))
+
+
+            print("\t\t",ch,par,val)
             #Push all parameters
+      
+            Channel_list[int(ch)].append_to_parameter(par,[val])
+            Channel_list[int(ch)].append_to_parameter("Time",[timestamp])
+            
             #Update the comparison timestep
             freshstep=timestamp
+            event_count+=1
+        
+        
+        print("Event count ", event_count," \n\n")
 
+
+        
 
 
 
         #Determine when the next time step changes
-
+    print("\n\n\t\tAfter loop debug")
+    for channel in Channel_list:
+        for parameter in parameter_list:
+            print(channel.name, parameter, " :", channel.get_parameter(parameter))
 
 
 
