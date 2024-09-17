@@ -1,11 +1,12 @@
 #HV_logfile_ana
 
 #Imports
-import os,sys,argparse,time
+import matplotlib.pyplot as plt
+import os,sys,argparse,time,math
 import numpy as np
-import matplotlib as plt
+
 import pandas as pd
-parameter_list=["Time","VMon","IMonL","IMonH","VSet","ISet","ChStatus"]
+parameter_list=["VMon","IMonL","IMonH","VSet","ISet","ChStatus"]
 
 last_parameter=""
 last_time=""
@@ -123,14 +124,14 @@ def main(Args):
     #Build up channels and parameters
     for channel in Channel_list:
         for parameter in parameter_list:
-            channel.add_parameter(parameter,["0.0000"])
+            channel.add_parameter(parameter,[(0,"0.0000")])
 
     #Number of unique time stamps
     event_count=1
 
 
 
-    for line in infile.readlines()[0:50]:
+    for line in infile.readlines()[:-100:-1]:
 
 
         line_elements=line.split(" ")
@@ -150,13 +151,15 @@ def main(Args):
 
         
         eventtype=typeofevent(timestamp,par)
-        print(raw_timestamp,ch,par,val,eventtype)
+        if debug > 4: print(timestamp,raw_timestamp,ch,par,val,eventtype)
 
-        if eventtype=="new":
+        Channel_list[int(ch)].append_to_parameter(par,[(timestamp,val)])
+
+        # if eventtype=="new":
             #New Event
             #Need to append arrays and insert parameter
-            Channel_list[int(ch)].append_to_parameter("Time",[timestamp])
-            Channel_list[int(ch)].append_to_parameter(par,[val])
+            # Channel_list[int(ch)].append_to_parameter("Time",[timestamp])
+            # Channel_list[int(ch)].append_to_parameter(par,[val])
 
 
 
@@ -169,7 +172,47 @@ def main(Args):
     return Channel_list        
 
 
+def plot_all_channels_2d(channels: list):
+    """Plots 2D subplots for each parameter in each channel."""
+    # Determine the number of parameters across all channels
+    num_parameters = sum(len(channel.parameters) for channel in channels)
+    
+    # Set up a 2D grid with 2 columns (you can adjust the number of columns)
+    cols = 4
+    rows = math.ceil(num_parameters / cols)
 
+    # Create subplots grid (rows x cols)
+    fig, axs = plt.subplots(rows, cols, figsize=(12, 5 * rows))
+
+    # Ensure axs is a 2D array even if there's only one row
+    axs = axs.flatten()  # Flatten to make it easier to index
+
+    plot_idx = 0
+    for channel in channels:
+        for parameter_name, time_value_pairs in channel.parameters.items():
+            # Extract times and values
+            times = [t[0] for t in time_value_pairs]
+            values = [t[1] for t in time_value_pairs]
+
+            # Plot in the corresponding subplot
+            axs[plot_idx].plot(times, values, marker='o', linestyle='-', label=parameter_name)
+            axs[plot_idx].set_title(f'{channel.name}: {parameter_name} vs Time')
+            axs[plot_idx].set_xlabel('Time')
+            axs[plot_idx].set_ylabel(parameter_name)
+            axs[plot_idx].legend()
+            axs[plot_idx].grid(True)
+            axs[plot_idx].tick_params(axis='x', rotation=45)
+
+            plot_idx += 1
+
+    # Remove empty subplots if any
+    if plot_idx < len(axs):
+        for i in range(plot_idx, len(axs)):
+            fig.delaxes(axs[i])
+
+    # Adjust layout to prevent overlap
+    plt.tight_layout()
+    plt.show()
 
 
 
@@ -181,6 +224,14 @@ def main(Args):
 
 
 if __name__ == "__main__":
-   Args=argumentparse(sys.argv[1:])
-   print(Args)
-   Channel_list=main(Args)
+    Args=argumentparse(sys.argv[1:])
+    print(Args)
+    Channel_list=main(Args)
+
+
+    plot_all_channels_2d(Channel_list)
+
+
+
+
+
