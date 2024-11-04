@@ -10,6 +10,7 @@ parameter_list=["VMon","IMonL","IMonH","VSet","ISet","ChStatus"]
 
 last_parameter=""
 last_time=""
+last_chan=""
 
 
 #debug=5
@@ -90,20 +91,25 @@ def closelogfile(logfile):
 def check_newevent(timestamp):
     print("Not Ready")
 
-def typeofevent(timestamp,par):
+def typeofevent(timestamp,par,chan):
     #pull the global varibles for c parameter and time
     global last_parameter
     global last_time
+    global last_chan
     event_type=""
     if timestamp==last_time:
         "This is new event"
         event_type="repeat"
-        if par==last_parameter:
+        if par==last_parameter and chan == last_chan:
             event_type="repeat par"
+            last_chan=chan 
+        last_chan=chan   
+
     else:
         event_type="new"
         last_parameter=par
         last_time=timestamp
+        last_chan=chan
 
     return event_type
     
@@ -131,7 +137,7 @@ def main(Args):
 
 
 
-    for line in infile.readlines()[:-100:-1]:
+    for line in infile.readlines()[-100::1]:
 
 
         line_elements=line.split(" ")
@@ -150,12 +156,12 @@ def main(Args):
 
 
         
-        eventtype=typeofevent(timestamp,par)
+        eventtype=typeofevent(timestamp,par,ch)
         if debug > 4: print(timestamp,raw_timestamp,ch,par,val,eventtype)
 
         Channel_list[int(ch)].append_to_parameter(par,[(timestamp,val)])
 
-        # if eventtype=="new":
+        #if eventtype=="new":
             #New Event
             #Need to append arrays and insert parameter
             # Channel_list[int(ch)].append_to_parameter("Time",[timestamp])
