@@ -176,7 +176,7 @@ def read_newdata(Args):
         for parameter in parameter_list:
             channel.add_parameter(parameter,[(0,"0.0000")])
 
-    for line in file.readlines()[-20:]:
+    for line in file.readlines()[-10:]:
         line_elements=line.split(" ")
 
         raw_timestamp=line_elements[0].replace("[","").replace("]","").replace("T"," ")
@@ -230,7 +230,7 @@ if __name__ == "__main__":
 
         
        
-        if i >=10:
+        if i >=100:
             break
         i=i+1
     
