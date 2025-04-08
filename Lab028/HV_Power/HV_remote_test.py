@@ -7,7 +7,7 @@ import os, time
 
 type="N1470"   ##Type of power suppl
 link="USB_VCP" ##How the supply is connected
-address="COM10"   ##The connection port
+address="COM5"   ##The connection port
 
 
 def connect():
@@ -28,6 +28,7 @@ def connect():
     except:
 
         print("issue with connection")
+        print(" Please check that the Power supply is on and \n make sure you are using the correct port.")
         exit()
 
     try:
