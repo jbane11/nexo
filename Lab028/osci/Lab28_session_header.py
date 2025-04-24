@@ -1,3 +1,23 @@
+import numpy as np
+#Import needed libraries
+import h5py
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import glob
+import csv
+import datetime
+import os,platform
+from scipy.optimize import curve_fit
+import scipy
+from scipy.fft import fft, rfft, irfft,ifft,fftfreq
+from scipy.signal import argrelextrema
+from scipy.stats import norm
+from lmfit.models import SkewedGaussianModel
+import re
+import sqlite3
+
+
 def search_keywords(text, keywords):
     """
     Searches for a list of keywords in a given text and returns the matched ones.
@@ -228,3 +248,40 @@ def ReNameCols(DF):
 
     return DF
 
+# Gaussian function definition
+def congaussian(x,A,t,sigma):
+    return A * np.exp(-(x-t)/10)* np.exp(-(x-t)**2/(2*sigma**2))
+
+def gaussian(x, a, mu, sigma):
+    return a * np.exp(-(x - mu) ** 2 / (2 * sigma ** 2))
+def logarithmic_model(x, a, b):
+    return a * np.log(b * x)
+
+def dg(x,a,mu_a,sigma_a,m,b):
+    return a * np.exp(-(x - mu_a) ** 2 / (2 * sigma_a ** 2)) +   (m + x*b)
+
+def sin_linear(x, amplitude, frequency, phase, slope, intercept):
+    return amplitude * np.sin(2 * np.pi * frequency * x + phase) + slope * x + intercept
+def sin(x, amplitude, frequency, phase ):
+    return amplitude * np.sin(2 * np.pi * frequency * x + phase)
+
+def sin_exp(x, amplitude, frequency, phase, Tail_amp, Decay):
+    return amplitude * np.sin(2 * np.pi * frequency * x + phase)+Tail_amp*np.exp(Decay*x)
+
+def simple_exp(x, Amp, Decay):
+        return Amp*np.exp(Decay*x)
+
+# Define a sinusoidal function for fitting
+def sinusoidal(x, amplitude, frequency, phase, offset):
+    return amplitude * np.sin(2 * np.pi * frequency * x + phase) + offset
+
+# Define the skewed Gaussian function
+def skewed_gaussian(x, alpha, mu, sigma, amplitude):
+    # Standard normal PDF
+    pdf = amplitude * (2 / sigma) * norm.pdf((x - mu) / sigma)
+    # Skew factor
+    cdf = norm.cdf(alpha * (x - mu) / sigma)
+    return pdf * cdf
+
+def errfunc(x, a, b, z, f):
+    return a * scipy.special.erf((x - z)*f) + b
