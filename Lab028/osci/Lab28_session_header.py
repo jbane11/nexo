@@ -30,7 +30,7 @@ def search_keywords(text, keywords):
     return found_keywords
 
 #Function to retrieve run list information
-def GetRunInfo(runnumber, old=False):
+def GetRunInfo(runnumber:int , old=False) -> pd.DataFrame:
     global Runlist_DF
     if old:
         print("not set up yet")
@@ -45,7 +45,11 @@ def GetRunInfo(runnumber, old=False):
         return DF
     
 
-def GetBGRun(run):
+def GetBGRun(run:int) -> int:  
+    ''' GetBGRun(run)
+        This function returns the background run number for a given run number.
+        It uses the global variable bgdb to query the background database.
+    '''
     global bgdb
     try:
         return bgdb.query("run==%i"%(run)).iloc[0]["background"]
@@ -57,7 +61,7 @@ def isAnodeOff(run):
     return  GetRunInfo(run).iloc[0]["Anode V."] == 0 
 
 
-def find_the_file(RN=596,debug=1):
+def find_the_file(RN=596,debug=1) -> str:
 
     ''' find_the_file(Run number)
             This function attempt to find the data file location of of file based on the run number.
@@ -91,7 +95,11 @@ def find_the_file(RN=596,debug=1):
     else :
         return waveformpath
 
-def GetWaveForm(runnumber,wavenumber=11,debug=1):
+def GetWaveForm(runnumber :int,wavenumber=11,debug=1) -> pd.DataFrame:
+    ''' GetWaveForm(runnumber)
+        This function attempts to find the waveform file for a given run number and wavenumber.
+        It uses the function find_the_file to locate the file. It then reads the file
+    '''
     global waveform_path
     RI = GetRunInfo(runnumber) 
     RN=runnumber
