@@ -1,0 +1,242 @@
+\begin{thebibliography}{10}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \def\href#1#2{#2} \def\path#1{#1}\fi
+
+\bibitem{Auger2012}
+{EXO-200 Collaboration}, {Search for Neutrinoless Double-Beta Decay in $^{136}
+  \text{Xe}$ with EXO-200}, Physical Review Letters 109~(3) (Jul. 2012).
+\newblock \href {https://doi.org/10.1103/physrevlett.109.032505}
+  {\path{doi:10.1103/physrevlett.109.032505}}.
+
+\bibitem{LZ_general}
+{LZ Collaboration}, {The LUX-ZEPLIN (LZ) experiment}, Nucl. Instr. and Meth. in
+  Phys. Res. A 953 (2020) 163047.
+\newblock \href {https://doi.org/10.1016/j.nima.2019.163047}
+  {\path{doi:10.1016/j.nima.2019.163047}}.
+
+\bibitem{XENONnT_general}
+{XENON Collaboration}, {The XENONnT dark matter experiment}, The European
+  Physical Journal C 84~(8) (Aug. 2024).
+\newblock \href {https://doi.org/10.1140/epjc/s10052-024-12982-5}
+  {\path{doi:10.1140/epjc/s10052-024-12982-5}}.
+
+\bibitem{nEXO_PCDR}
+{nEXO Collaboration}, {nEXO Pre-Conceptual Design Report}, arxiv
+  [physics.ins-det] (2018).
+\newblock \href {https://doi.org/10.48550/ARXIV.1805.11142}
+  {\path{doi:10.48550/ARXIV.1805.11142}}.
+
+\bibitem{XLZD_0bb}
+J.~Aalbers, et~al., A next-generation liquid xenon observatory for dark matter
+  and neutrino physics, Journal of Physics G: Nuclear and Particle Physics
+  50~(1) (2022) 013001.
+\newblock \href {https://doi.org/10.1088/1361-6471/ac841a}
+  {\path{doi:10.1088/1361-6471/ac841a}}.
+
+\bibitem{Abdukerim2024}
+{PandaX Collaboration}, {PandaX-xT—A deep underground multi-ten-tonne liquid
+  xenon observatory}, Science China Physics, Mechanics \& Astronomy 68~(2)
+  (Nov. 2024).
+\newblock \href {https://doi.org/10.1007/s11433-024-2539-y}
+  {\path{doi:10.1007/s11433-024-2539-y}}.
+
+\bibitem{xenonnt_rn}
+E.~Aprile, et~al., {Radon Removal in XENONnT down to the Solar Neutrino Level},
+  arXiv (2025).
+\newblock \href {https://doi.org/10.48550/ARXIV.2502.04209}
+  {\path{doi:10.48550/ARXIV.2502.04209}}.
+
+\bibitem{LZ_Rn}
+J.~Aalbers, et~al., {Background determination for the LUX-ZEPLIN dark matter
+  experiment}, Physical Review D 108~(1) (Jul. 2023).
+\newblock \href {https://doi.org/10.1103/physrevd.108.012010}
+  {\path{doi:10.1103/physrevd.108.012010}}.
+
+\bibitem{Albert2015}
+{EXO-200 Collaboration}, {Investigation of radioactivity-induced backgrounds in
+  EXO-200}, Physical Review C 92~(1) (Jul. 2015).
+\newblock \href {https://doi.org/10.1103/physrevc.92.015503}
+  {\path{doi:10.1103/physrevc.92.015503}}.
+
+\bibitem{XLZD_Rn}
+{XLZD Collaboration}, {The XLZD Design Book: Towards the Next-Generation Liquid
+  Xenon Observatory for Dark Matter and Neutrino Physics}, arXiv [hep-ex]
+  (2024).
+\newblock \href {https://doi.org/10.48550/ARXIV.2410.17137}
+  {\path{doi:10.48550/ARXIV.2410.17137}}.
+
+\bibitem{nEXO_Rn}
+{nEXO Collaboration}, {nEXO}: neutrinoless double beta decay search beyond
+  10$^{28}$ year half-life sensitivity, Journal of Physics G: Nuclear and
+  Particle Physics 49~(1) (2021) 015104.
+\newblock \href {https://doi.org/10.1088/1361-6471/ac3631}
+  {\path{doi:10.1088/1361-6471/ac3631}}.
+
+\bibitem{PandaX-xT_Rn}
+{PandaX Collaboration}, {PandaX-xT—A deep underground multi-ten-tonne liquid
+  xenon observatory}, Science China Physics, Mechanics {\&} Astronomy 68~(2)
+  (Nov. 2024).
+\newblock \href {https://doi.org/10.1007/s11433-024-2539-y}
+  {\path{doi:10.1007/s11433-024-2539-y}}.
+
+\bibitem{LZ_RBC_Program}
+D.~S. Akerib, et~al., {The LUX-ZEPLIN (LZ) radioactivity and cleanliness
+  control programs}, The European Physical Journal C 80~(11) (Nov. 2020).
+\newblock \href {https://doi.org/10.1140/epjc/s10052-020-8420-x}
+  {\path{doi:10.1140/epjc/s10052-020-8420-x}}.
+
+\bibitem{q_val1}
+M.~Redshaw, et~al., Mass and double-beta-decay $q$ value of
+  $^{136}\mathrm{Xe}$, Phys. Rev. Lett. 98 (2007).
+\newblock \href {https://doi.org/10.1103/PhysRevLett.98.053003}
+  {\path{doi:10.1103/PhysRevLett.98.053003}}.
+
+\bibitem{ensdf}
+{From ENSDF database. Version available at
+  \url{http://www.nndc.bnl.gov/ensarchivals/}} (accessed 2/19/2025).
+
+\bibitem{sazzad24_rn}
+A.~Sazzad, et~al., {Radon emanation rate measurements using liquid
+  scintillation counting}, Journal of Instrumentation 20~(01) (2025) P01020.
+\newblock \href {https://doi.org/10.1088/1748-0221/20/01/p01020}
+  {\path{doi:10.1088/1748-0221/20/01/p01020}}.
+
+\bibitem{Liu1993}
+M.~Liu, H.~Lee, A.~McDonald, $^{222}\text{Rn}$ emanation into vacuum, Nucl.
+  Instr. and Meth. in Phys. Res. A 329~(1–2) (1993) 291–298.
+\newblock \href {https://doi.org/10.1016/0168-9002(93)90948-h}
+  {\path{doi:10.1016/0168-9002(93)90948-h}}.
+
+\bibitem{LucasCell_Blevis2004}
+I.~Blevis, et~al., {Measurement of dissolved in water at the Sudbury Neutrino
+  Observatory}, Nucl. Instr. and Meth. in Phys. Res. A 517~(1–3) (2004)
+  139–153.
+\newblock \href {https://doi.org/10.1016/j.nima.2003.10.103}
+  {\path{doi:10.1016/j.nima.2003.10.103}}.
+
+\bibitem{Zuzel2009}
+G.~Zuzel, H.~Simgen, High sensitivity radon emanation measurements, Applied
+  Radiation and Isotopes 67~(5) (2009) 889–893.
+\newblock \href {https://doi.org/10.1016/j.apradiso.2009.01.052}
+  {\path{doi:10.1016/j.apradiso.2009.01.052}}.
+
+\bibitem{RnAssays_XENON1T}
+{XENON Collaboration}, $^{222}\text{Rn}$ emanation measurements for the
+  {XENON1T} experiment, The European Physical Journal C 81~(4) (Apr. 2021).
+\newblock \href {https://doi.org/10.1140/epjc/s10052-020-08777-z}
+  {\path{doi:10.1140/epjc/s10052-020-08777-z}}.
+
+\bibitem{brunner_thesis}
+S.~A. Br\"{u}nner, {Mitigation of $^{222}\text{Rn}$ induced background in the
+  XENON1T dark matter experiment}, Ph.D. thesis, Heidelberg University (2017).
+\newblock \href {https://doi.org/10.11588/HEIDOK.00023261}
+  {\path{doi:10.11588/HEIDOK.00023261}}.
+
+\bibitem{Armstrong2023}
+J.~E. Armstrong, et~al., {Radon burden and Xe purification performance of hot
+  zirconium getters}, in: LOW RADIOACTIVITY TECHNIQUES 2022: Proceedings of the
+  8th International Workshop on LRT, Vol. 2908, AIP Publishing, 2023, p.
+  070002.
+\newblock \href {https://doi.org/10.1063/5.0161727}
+  {\path{doi:10.1063/5.0161727}}.
+
+\bibitem{Mamedov2011}
+F.~Mamedov, I.~Štekl, J.~Koníček, K.~Smolek, P.~Čermák, {Development of an
+  ultra-sensitive radon detector for the SuperNEMO experiment}, Journal of
+  Instrumentation 6~(12) (2011) C12008–C12008.
+\newblock \href {https://doi.org/10.1088/1748-0221/6/12/c12008}
+  {\path{doi:10.1088/1748-0221/6/12/c12008}}.
+
+\bibitem{SNO_ESC_NIM}
+J.-X. Wang, T.~C. Andersen, J.~J. Simpson, {An electrostatic radon detector
+  designed for water radioactivity measurements}, Nucl. Instr. and Meth. in
+  Phys. Res. A 421~(3) (1999) 601--609.
+\newblock \href {https://doi.org/10.1016/s0168-9002(98)01230-3}
+  {\path{doi:10.1016/s0168-9002(98)01230-3}}.
+
+\bibitem{Andersen2003}
+{SNO Collaboration}, {Measurement of radium concentration in water with
+  Mn-coated beads at the Sudbury Neutrino Observatory}, Nucl. Instr. and Meth.
+  in Phys. Res. A 501~(2–3) (2003) 399–417.
+\newblock \href {https://doi.org/10.1016/s0168-9002(03)00616-8}
+  {\path{doi:10.1016/s0168-9002(03)00616-8}}.
+
+\bibitem{Farine2005}
+J.~Farine, {Assay of Radon and Radium in Water: Techniques Developed at SNO},
+  in: AIP Conference Proceedings, Vol. 785, AIP, 2005, p. 199–208.
+\newblock \href {https://doi.org/10.1063/1.2060472}
+  {\path{doi:10.1063/1.2060472}}.
+
+\bibitem{electropolishing_reduce_Rn}
+R.~W. Schnee, et~al., Removal of long-lived $^{222}$rn daughters by
+  electropolishing thin layers of stainless steel, {arXiv} (2014).
+\newblock \href {https://doi.org/10.48550/ARXIV.1404.5843}
+  {\path{doi:10.48550/ARXIV.1404.5843}}.
+
+\bibitem{LePort2011}
+F.~LePort, et~al., {A magnetically driven piston pump for ultra-clean
+  applications}, Review of Scientific Instruments 82~(10) (Oct. 2011).
+\newblock \href {https://doi.org/10.1063/1.3653391}
+  {\path{doi:10.1063/1.3653391}}.
+
+\bibitem{Brown2018}
+E.~Brown, et~al., Magnetically-coupled piston pump for high-purity gas
+  applications, The European Physical Journal C 78~(7) (Jul. 2018).
+\newblock \href {https://doi.org/10.1140/epjc/s10052-018-6062-z}
+  {\path{doi:10.1140/epjc/s10052-018-6062-z}}.
+
+\bibitem{HOPKE1989299}
+P.~K. Hopke, The initial behavior of $^{218}\text{Po}$ in indoor air,
+  Environment International 15~(1) (1989) 299--308.
+\newblock \href {https://doi.org/10.1016/0160-4120(89)90042-1}
+  {\path{doi:10.1016/0160-4120(89)90042-1}}.
+
+\bibitem{PAGELKOPF20031057}
+P.~Pagelkopf, J.~Porstendörfer, {Neutralisation rate and the fraction of the
+  positive $^{218}\text{Po}$-clusters in air}, Atmospheric Environment 37~(8)
+  (2003).
+\newblock \href {https://doi.org/10.1016/S1352-2310(02)00997-4}
+  {\path{doi:10.1016/S1352-2310(02)00997-4}}.
+
+\bibitem{alphaion}
+{EXO-200 Collaboration}, Measurements of the ion fraction and mobility of
+  $\alpha-$ and $\beta-$decay products in liquid xenon using the {EXO}-200
+  detector, Physical Review C 92~(4) (10 2015).
+\newblock \href {https://doi.org/10.1103/physrevc.92.045504}
+  {\path{doi:10.1103/physrevc.92.045504}}.
+
+\bibitem{ESC_Electronics}
+B.~Mong, {ESC Electronics}, \url{https://github.com/bungernut/ESC_Electronics}
+  (2024).
+
+\bibitem{bateman1910}
+H.~Bateman, The solution of a system of differential equations occurring in the
+  theory of radioactive transformations, in: Proc. Cambridge Philos. Soc.,
+  Vol.~15, 1910, pp. 423--427.
+
+\bibitem{numpy}
+C.~R. Harris, et~al., {Array programming with NumPy}, Nature 585~(7825) (2020)
+  357–362.
+\newblock \href {https://doi.org/10.1038/s41586-020-2649-2}
+  {\path{doi:10.1038/s41586-020-2649-2}}.
+
+\bibitem{Levy2018}
+E.~Levy, {A matrix exponential approach to radioactive decay equations},
+  American Journal of Physics 86~(12) (2018) 909–913.
+\newblock \href {https://doi.org/10.1119/1.5064446}
+  {\path{doi:10.1119/1.5064446}}.
+
+\bibitem{pylon}
+{Pylon Electronics Inc
+  \url{https://pylonelectronics-radon.com/radioactive-sources/}} (2015).
+
+\bibitem{Tsang2023}
+R.~Tsang, et~al., {An integrated online radioassay data storage and analytics
+  tool for nEXO}, Nucl. Instr. and Meth. in Phys. Res. A 1055 (2023) 168477.
+\newblock \href {https://doi.org/10.1016/j.nima.2023.168477}
+  {\path{doi:10.1016/j.nima.2023.168477}}.
+
+\end{thebibliography}
