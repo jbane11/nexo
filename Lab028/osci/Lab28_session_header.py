@@ -18,6 +18,28 @@ import re
 import sqlite3
 
 
+# Please update these path varibles to your local machine.
+env_session_file_location = r"\\172.24.54.234\\NAS-Lab28\\Data"
+NAS_Path = r"\\172.24.54.234\\NAS-Lab28"
+Plot_path= r"\\172.24.54.234\\NAS-Lab28\\Users\\Bane\\Plots"
+locations= ["C:/Users/jasonbane/Desktop/nexo_code/nexo/Lab028/osci/data/waveforms/",r"\\172.24.54.234\\NAS-Lab28\\Data\\"]
+
+# This will be phased out once update are made to use new database format
+#Read in runlist and change cols to numbers
+Runlist_DF = pd.read_csv(NAS_Path+"\\DataBases\\RunList.csv",index_col=False)
+Runlist_DF["RN"]=Runlist_DF["Run No."]
+number_cols=["Anode V.","Anode Grid V.","Cathode V.","Cathode Grid V.","Drift Length"]
+Runlist_DF[number_cols] = Runlist_DF[number_cols].apply(pd.to_numeric)
+
+# Read in Drift stack measurements database for drift, ext, col lengths and errors
+Distance_Database=pd.read_csv(NAS_Path+"\\DataBases\\CellDistance.csv")
+Distance_Database["date"] = Distance_Database["date"].astype(str)
+Distance_Database["date"] = pd.to_datetime(Distance_Database["date"])
+
+
+bgdb=pd.read_csv(NAS_Path+"\\DataBases\\bg_db.csv")
+
+
 def search_keywords(text, keywords):
     """
     Searches for a list of keywords in a given text and returns the matched ones.
@@ -77,7 +99,7 @@ def find_the_file(RN=596,debug=1) -> str:
     
     runstr = f"{RN}".zfill(5)
 
-    dir_strs= [f"{RI.Date}-{runstr}",f"{RI.Date}/{RI.Date}-{runstr}"]
+    dir_strs= [f"{RI.Date}-{runstr}",f"{RI.Date}\\{RI.Date}-{runstr}"]
     located=0
     for loc in locations:
         for dir_str in dir_strs:
@@ -112,6 +134,11 @@ def GetWaveForm(runnumber :int,wavenumber=11,debug=1) -> pd.DataFrame:
     # For left PC
     #waveform_dir=waveform_path+waveform_date+"/"+waveform_date+"-"+runnumber
     waveformpath=find_the_file(RN,debug=debug)
+
+    print("waveformpath",waveformpath)
+    if waveformpath == 0:
+        print("Waveform file not found for run number:", runnumber)
+        return pd.DataFrame()
     waveform_dir = waveformpath
 
 
@@ -122,9 +149,12 @@ def GetWaveForm(runnumber :int,wavenumber=11,debug=1) -> pd.DataFrame:
         print(waveformpath)
 
     waveform_wavenumber="%s"%(wavenumber)
-
+    print("wavenumber",waveform_wavenumber)
     waveform_filename=waveform_date+"-"+runnumber+"_"+"*"+waveform_wavenumber
+    print("waveform_filename",waveform_filename)
+    print("waveform_dir",waveform_dir)
     waveform_fullpath_wild=waveform_dir+"/"+waveform_filename+".csv"
+    print("waveform_fullpath_wild",waveform_fullpath_wild)
     try: 
         waveform_fullpath=glob.glob(waveform_fullpath_wild )[-1].replace("\\","/")
     except:
